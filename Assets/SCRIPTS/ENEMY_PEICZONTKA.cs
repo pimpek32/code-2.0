@@ -47,6 +47,7 @@ public class ENEMY_PEICZONTKA : MonoBehaviour
             OBJ = Instantiate(EXPLODE, transform.position, transform.rotation);
             Destroy(OBJ, 15F);
             Destroy(gameObject);
+            Destroy(other.gameObject, 0.5f);
             }
         
     }

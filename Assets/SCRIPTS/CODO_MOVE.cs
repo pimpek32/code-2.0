@@ -18,7 +18,8 @@ public class CODO_MOVE : MonoBehaviour
     public GameObject BULLET;
     public Transform CAM_MOVE;
     public int FRAMES = 0;
-
+    private float COOLDOWN = 0.75F;
+    private float CDOWN;
     int CURFRAME = 0;
     // Start is called before the first frame update
     void Start()
@@ -26,17 +27,19 @@ public class CODO_MOVE : MonoBehaviour
         RIGID_BODY = GetComponent<Rigidbody2D>();
         PLAYER_SPRITE = GetComponent<SpriteRenderer>();
         CAM_MOVE = transform.Find("CAM_MOVE");
+        CDOWN = COOLDOWN;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && COOLDOWN < 0 )
         {
             SHOOT();
         }
 
-        if(PLAYER_SPRITE.flipX)
+        COOLDOWN -= Time.deltaTime;
+        if (PLAYER_SPRITE.flipX)
             CAM_MOVE.localPosition = new Vector3(-3, 0, 0);
         else
             CAM_MOVE.localPosition = new Vector3(3, 0, 0);
@@ -96,5 +99,6 @@ public class CODO_MOVE : MonoBehaviour
         obj.GetComponent<CinemachineImpulseSource>().GenerateImpulse();
         obj.GetComponent<Rigidbody2D>().AddForce(Vector2.left * BULLET_FORCE * (PLAYER_SPRITE.flipX ? 1 : -1));
         Destroy(obj, 5F);
+        COOLDOWN = CDOWN;
     } // strzelanko :)
 }
